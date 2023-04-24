@@ -1,0 +1,67 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+<body class="hero-anime">
+<div class="navigation-wrap bg-light start-header start-style">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-md navbar-light">
+
+                    <a class="navbar-brand" href="/"><img
+                            src="https://tinypic.host/images/2023/03/20/m-design-logo-09A5D82F03-seeklogo.com.png"
+                            alt=""></a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto py-4 py-md-0">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link" href="{% url 'home' %}">Home</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link" href="{% url 'about' %}">About</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false">Services</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Facelift</a>
+                                    <a class="dropdown-item" href="#">Body contouring</a>
+                                    <a class="dropdown-item" href="#">Dermabrasion</a>
+                                </div>
+                            </li>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                       aria-haspopup="true" aria-expanded="false">Profile</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">My appointments</a>
+                                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+
+                                    </div>
+                                </li>
+                            {% else %}
+                                <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                    <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
+<script src="{% static 'js/function.js' %}"></script>
+</body>

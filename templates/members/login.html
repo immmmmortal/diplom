@@ -1,0 +1,48 @@
+{% extends 'my_site/base.html' %}
+{% load static %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="signup-form" style="margin-top: 10%">
+        <div class="container">
+            <div class="header">
+                <h1>Login</h1>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    {{ form.name }}
+                </div>
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="signup-btn">Login</button>
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> Please correct the following errors.
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ field }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </form>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}
+

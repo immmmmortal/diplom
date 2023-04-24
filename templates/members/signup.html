@@ -1,8 +1,58 @@
 {% extends 'my_site/base.html' %}
+{% load static %}
 
-{% block title %}Sign Up{% endblock %}
+{% block css %}
+
+{% endblock %}
 
 {% block content %}
-    <h1>Sign Up</h1>
-    <p>Here's the sign-up form.</p>
+    <div class="signup-form" style="margin-top: 10%">
+        <div class="container">
+            <div class="header">
+                <h1>Create an Account</h1>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    {{ form.name }}
+                </div>
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    {{ form.email }}
+                </div>
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    {{ form.phone }}
+                </div>
+                <div class="input">
+                    <i class="fa-solid fa-envelope"></i>
+                    {{ form.password1 }}
+                </div>
+                <div class="input">
+                    <i class="fa-solid fa-envelope"></i>
+                    {{ form.password2 }}
+                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </form>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Error:</strong> Please correct the following errors.
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ field }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <p>Already have an account <a href="{% url 'login' %}">sign in</a></p>
+        </div>
+    </div>
 {% endblock %}
+
