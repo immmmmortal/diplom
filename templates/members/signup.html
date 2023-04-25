@@ -11,7 +11,7 @@
             <div class="header">
                 <h1>Create an Account</h1>
             </div>
-            <form method="post">
+            <form method="post" action="{% url 'signup' %}">
                 {% csrf_token %}
                 <div class="input">
                     <i class="fa-solid fa-user"></i>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="input">
                     <i class="fa-solid fa-user"></i>
-                    {{ form.phone }}
+                    {{ form.phone_number }}
                 </div>
                 <div class="input">
                     <i class="fa-solid fa-envelope"></i>
@@ -34,25 +34,23 @@
                     {{ form.password2 }}
                 </div>
                 <button type="submit" class="signup-btn">Sign Up</button>
-                {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                {% endfor %}
-            </form>
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Error:</strong> Please correct the following errors.
-                    <ul>
-                        {% for field, errors in form.errors.items %}
-                            {% for error in errors %}
-                                <li>{{ field }}: {{ error }}</li>
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> Please correct the following errors.
+                        <ul style="margin-left: 5%">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ field }}: {{ error }}</li>
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </form>
 
             <p>Already have an account <a href="{% url 'login' %}">sign in</a></p>
         </div>
     </div>
+
 {% endblock %}
 

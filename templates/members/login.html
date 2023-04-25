@@ -11,20 +11,19 @@
             <div class="header">
                 <h1>Login</h1>
             </div>
-            <form method="post">
+            <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="input">
                     <i class="fa-solid fa-user"></i>
-                    {{ form.name }}
+                    {{ form.username.errors }}
+                    {{ form.username }}
                 </div>
                 <div class="input">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="fa-solid fa-envelope"></i>
+                    {{ form.password.errors }}
                     {{ form.password }}
                 </div>
                 <button type="submit" class="signup-btn">Login</button>
-                {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                {% endfor %}
                 {% if form.errors %}
                     <div class="alert alert-danger">
                         <strong>Error:</strong> Please correct the following errors.
@@ -39,10 +38,7 @@
                 {% endif %}
             </form>
 
-
         </div>
     </div>
-
-
 {% endblock %}
 

@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from my_site.models import Customer, Appointment, SalonService, Employee
+
+
+@admin.register(Customer, Appointment, SalonService, Employee)
+class AuthorAdmin(admin.ModelAdmin):
+    pass
+
+
