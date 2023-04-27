@@ -1,7 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from .models import Customer, Appointment
 from django.utils.translation import gettext_lazy as _
+
 
 class CustomerCreationForm(UserCreationForm):
     name = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'placeholder': 'Name'}))
@@ -22,31 +24,16 @@ class CustomerLoginForm(AuthenticationForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
-class CustomUserChangeForm(UserChangeForm):
-    email = forms.EmailField(required=True, help_text=_('Required.'))
-    phone = forms.CharField(max_length=20, required=False)
+class UpdateUserForm(forms.ModelForm):
+    name = forms.CharField(max_length=100,
+                           required=True,
+                           widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone_number = forms.CharField(max_length=20,
+                                   required=True,
+                                   widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Customer
-        fields = ('email', 'phone')
-
-
-class AppointmentChangeForm(forms.ModelForm):
-    class Meta:
-        model = Appointment
-        fields = ('appointment_date',)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['appointment_date'].widget.attrs.update({'class': 'form-control', 'type': 'datetime-local'})
-
-
-class CustomUserForm(forms.ModelForm):
-    class Meta:
-        model = Customer
-        fields = ['name', 'email']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs.update({'class': 'form-control', 'readonly': True})
-        self.fields['email'].widget.attrs.update({'class': 'form-control', 'readonly': True})
+        fields = ['name', 'email', 'phone_number']

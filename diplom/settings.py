@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import environ
 import os
 from pathlib import Path
-
-from django.contrib import messages
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,7 +32,6 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -56,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
 ROOT_URLCONF = 'diplom.urls'
@@ -73,12 +73,17 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'my_templatetag': 'members.templatetags.custom_filters',
+
+            }
         },
     },
 ]
 
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 WSGI_APPLICATION = 'diplom.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -89,7 +94,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -110,13 +114,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
+    messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
     messages.SUCCESS: 'alert-success',
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -133,7 +136,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -144,7 +146,6 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images')
 MEDIA_URL = 'media/'
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
