@@ -1,0 +1,17 @@
+.editable-field {
+    position: relative;
+}
+
+.editable-field input {
+    padding-right: 30px;
+}
+
+.editable-field::after {
+    content: '\270E'; /* Unicode for the pen icon */
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Allows the input field to receive clicks */
+}

@@ -79,6 +79,9 @@ class Appointment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('service', 'appointment_date', 'customer')
+
 
 class RenderedService(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)

@@ -1,10 +1,10 @@
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import logout
-from django.views.decorators.http import require_POST
-from datetime import datetime
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views.generic import DetailView
 
-from my_site.models import SalonService, Appointment
+from my_site.models import SalonService, Appointment, Customer
 
 
 def home(request):
@@ -17,27 +17,38 @@ def service_detail(request, service_id):
     return render(request, 'my_site/service_detail.html', {'service': service})
 
 
-@require_POST
-def create_appointment(request, service_id):
-    appointment_date_time = request.POST['appointment_date_time']
-    service_id = service_id
-    customer_id = request.POST['customer_id']
+class ServiceDetailView(DetailView):
+    model = SalonService
+    template_name = 'my_site/service_detail.html'
 
-    # Check if the appointment time is available for the selected service
-    if not Appointment.objects.filter(service_id=service_id,
-                                      appointment_date=datetime.strptime(appointment_date_time, '%Y-%m-%dT%H:%M')):
-        # Create a new appointment record
-        appointment = Appointment(
-            appointment_date=appointment_date_time,
-            customer_id=customer_id,
-            service_id=service_id
-        )
+
+def create_appointment(request):
+    if request.method == 'POST':
+        appointment_date_time = request.POST['appointment_date_time']
+        service_id = request.POST['service_id']
+        customer_id = request.POST['customer_id']
+
+        # Check if appointment is already booked for the same date and time for the same service
+        if Appointment.objects.filter(appointment_date_time=appointment_date_time, service_id=service_id).exists():
+            return HttpResponse('Appointment already booked for the selected date and time for this service.')
+
+        # Check if there is another appointment for the same service at the selected date and time
+        if Appointment.objects.filter(appointment_date_time=appointment_date_time, service_id=service_id).exists():
+            return HttpResponse('Another appointment already booked for the selected date and time for this service.')
+
+        # Create a new appointment object and save it to the database
+        appointment = Appointment(appointment_date_time=appointment_date_time, service_id=service_id,
+                                  customer_id=customer_id)
         appointment.save()
-        messages.success(request, 'Appointment created successfully.')
-    else:
-        messages.error(request, 'The selected time is already taken for this service.')
 
-    return redirect('service_details', id=service_id)
+        return redirect('appointment_confirmation')
+
+    else:
+        # Render the create appointment form with the available services and customers
+        services = SalonService.objects.all()
+        customers = Customer.objects.all()
+        context = {'services': services, 'customers': customers}
+        return render(request, 'my_site/create_appointment.html', context)
 
 
 def about(request):
