@@ -37,3 +37,5 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = ['name', 'email', 'phone_number']
+
+

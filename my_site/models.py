@@ -75,7 +75,7 @@ class SalonService(models.Model):
 class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     service = models.ForeignKey(SalonService, on_delete=models.CASCADE)
-    appointment_date = models.DateTimeField()
+    appointment_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
