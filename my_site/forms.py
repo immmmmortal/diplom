@@ -39,3 +39,12 @@ class UpdateUserForm(forms.ModelForm):
         fields = ['name', 'email', 'phone_number']
 
 
+class AppointmentForm(forms.ModelForm):
+    appointment_date = forms.DateTimeField(
+        widget=forms.TextInput(attrs={'type': 'date-local'}),
+        input_formats=['%Y-%m-%d'],
+    )
+
+    class Meta:
+        model = Appointment
+        fields = ['appointment_date', 'service', 'customer']

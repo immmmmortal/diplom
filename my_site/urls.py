@@ -7,6 +7,5 @@ urlpatterns = [
                   path('', views.home, name='home'),
                   path('about/', views.about, name='about'),
                   path('logout/', views.logout_view, name='logout'),
-                  path('services/<int:pk>/', views.ServiceDetailView.as_view(), name='service_detail'),
-                  path('create_appointment/', views.CreateAppointmentView.as_view(), name='create_appointment'),
+                  path('services/<int:pk>/', views.service_detail, name='service_detail'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL)
