@@ -1,5 +1,95 @@
 {% extends 'my_site/base.html' %}
-{% load static %}
+{% load static custom_filters %}
 {% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="service-details">
+        <h1>{{ service.name }}</h1>
+        <p>{{ service.description }}</p>
+        <form method="post" id="my-form">
+            {% csrf_token %}
+            <div id="date-container">
+                <label for="appointment_date">Appointment Date:</label>
+                {{ date_form.appointment_date }}
+                <div id="available-times"></div>
+            </div>
+            <input type="submit" value="Book Appointment">
+        </form>
+
+
+    </div>
+
+
+    <script>
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var availableTimesDiv = document.getElementById("available-times");
+        // Check if the div has inner fields
+        if (availableTimesDiv.innerHTML.trim() === "") {
+            console.log("Please select another date.");
+        } else {
+            console.log("Please select an appointment time.");
+        }
+
+        // Add an event listener to the form submission
+        document.getElementById("my-form").addEventListener("submit", function (event) {
+            // Prevent the form from submitting if a time has not been selected
+            if (!document.querySelector('input[name="appointment_time"]:checked')) {
+                event.preventDefault(); // Stop the form submission
+                alert("Please select an appointment time.");
+                return false;
+            }
+            // Allow the form to submit if a time has been selected
+            return true;
+        });
+
+        var dateInput = document.getElementById('id_appointment_date');
+        dateInput.addEventListener('change', function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{% url "get_available_times" %}');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));  // Include the CSRF token in the request headers
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                    var availableTimes = JSON.parse(xhr.responseText);
+                    var html = '';
+                    for (var i = 0; i < availableTimes.length; i++) {
+                        html += '<label><input type="radio" name="appointment_time" value="' + availableTimes[i][0] + '">' + availableTimes[i][1] + '</label><br>';
+                    }
+                    availableTimesDiv.innerHTML = html;
+                } else {
+                    console.error('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send('appointment_date=' + encodeURIComponent(this.value));
+        });
+
+        // Add an event listener to the form submission
+        document.getElementById("my-form").addEventListener("submit", function (event) {
+            // Reset the date input element to its default value
+            dateInput.value = dateInput.defaultValue;
+        });
+    </script>
 
 {% endblock %}

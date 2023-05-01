@@ -76,11 +76,12 @@ class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     service = models.ForeignKey(SalonService, on_delete=models.CASCADE)
     appointment_date = models.DateField()
+    appointment_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('service', 'appointment_date', 'customer')
+        unique_together = ('service', 'appointment_date', 'customer', 'appointment_time')
 
 
 class RenderedService(models.Model):

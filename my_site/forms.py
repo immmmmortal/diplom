@@ -1,8 +1,16 @@
 from django import forms
-from django.contrib.auth import password_validation
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Customer, Appointment
-from django.utils.translation import gettext_lazy as _
+from datetime import date
+
+TIME_CHOICES = (
+    ('12:00:00', '12am'),
+    ('13:00:00', '1pm'),
+    ('14:00:00', '2pm'),
+    ('15:00:00', '3pm'),
+    ('16:00:00', '4pm'),
+    ('17:00:00', '5pm'),
+)
 
 
 class CustomerCreationForm(UserCreationForm):
@@ -39,12 +47,15 @@ class UpdateUserForm(forms.ModelForm):
         fields = ['name', 'email', 'phone_number']
 
 
-class AppointmentForm(forms.ModelForm):
-    appointment_date = forms.DateTimeField(
-        widget=forms.TextInput(attrs={'type': 'date-local'}),
-        input_formats=['%Y-%m-%d'],
-    )
+class DateForm(forms.Form):
+    appointment_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'min': date.today().strftime('%Y-%m-%d')}), initial=None)
 
+
+class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
-        fields = ['appointment_date', 'service', 'customer']
+        fields = ['appointment_time']
+        widgets = {
+            'appointment_time': forms.Select(choices=[])
+        }
