@@ -1,20 +1,91 @@
 {% extends 'my_site/base.html' %}
-
-{% block title %}Profile{% endblock %}
-
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 {% block content %}
-    <div class="card-deck">
-        {% for service in services %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ service.name }}</h5>
-                    <p class="card-text">{{ service.description }}</p>
-                    <p class="card-text">${{ service.price }}</p>
+    <div class="container" style="">
+        <section id="team" class="pb-5" style="height: fit-content">
+            <div class="container">
+                <h5 class="section-title h1">OUR SERVICES</h5>
+                <div class="row">
+                    <!-- Team member -->
+                    {% for service in services %}
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div class="image-flip" style="">
+                                <div class="mainflip flip-0">
+                                    <div class="frontside">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title">{{ service.name }}
+                                                </h4>
+                                                <a href="#"><i class="fa fa-plus" style="color: indianred"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="backside" style="width: 330px">
+                                        <div class="card">
+                                            <div class="card-body text-center mt-4">
+                                                <h4 class="card-title">{{ service.name }}</h4>
+                                                <p class="card-text">Price: {{ service.price }} </p>
+
+                                                <button type="submit" id="button-appointment" class="btn btn-lg"
+                                                        style="background-color: #ff4242;color: #ffffff;margin-top: 5rem">
+                                                    <a href="{% url 'service_booking' service.id %}">Book
+                                                        Appointment</a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="card-footer">
-                    <a href="{% url 'service_booking' service.id %}" class="btn btn-primary">View Details</a>
+                <hr style="color: black">
+                {#            #}
+                <div class="emp-container">
+                    <div class="emp-card">
+                        <div class="emp-img">
+                            <img src="{% static 'images/emp1.jpg' %}" alt="">
+                        </div>
+                        <div class="emp-about">
+                            <h2>Our Employees</h2>
+                            <p>Our employees at the beauty salon are skilled professionals dedicated to providing
+                                exceptional service and creating a welcoming atmosphere for our valued customers. They
+                                possess a wealth of expertise in various beauty treatments and techniques, ensuring that
+                                each client receives personalized care and achieves their desired look. Our team is
+                                passionate about staying up-to-date with the latest trends and innovations in the
+                                industry, continuously refining their skills to deliver outstanding results. With their
+                                friendly demeanor and attention to detail, our employees strive to make every visit to
+                                our salon a delightful and rejuvenating experience.</p>
+                        </div>
+
+                    </div>
+                    <div class="emp-card">
+                        <div class="emp-img">
+                            <img src="{% static 'images/emp2.jpg' %}" alt="">
+                        </div>
+                        <div class="emp-about">
+                            <h2>Our Services</h2>
+                            <p>Our services are designed to enhance your beauty and provide a rejuvenating experience at
+                                our beauty salon. From luxurious facials and relaxing massages to professional
+                                hairstyling and expert nail care, we offer a comprehensive range of services to cater to
+                                your every beauty need. Our skilled team of aestheticians and stylists are committed to
+                                delivering personalized treatments that leave you feeling pampered and confident.
+                                Whether you're looking for a refreshing skincare routine, a glamorous makeover, or a
+                                perfect manicure, our salon is dedicated to providing exceptional service and helping
+                                you look and feel your best.</p>
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
-        {% endfor %}
+        </section>
     </div>
 {% endblock %}

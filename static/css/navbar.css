@@ -139,7 +139,7 @@
 }
 
 .bg-light {
-	background-color: #fff !important;
+	background-color: #828d99 !important;
     transition: all 200ms linear;
 }
 .section {
@@ -176,13 +176,13 @@ p {
 	opacity: 1;
 	transform: translate(0);
     transition: all 300ms linear;
-    transition-delay: 1700ms;
+    transition-delay: 14ms;
 }
 
 body.hero-anime p{
 	opacity: 0;
 	transform: translateY(40px);
-    transition-delay: 1700ms;
+    transition-delay: 170ms;
 }
 #switch,
 #circle {
@@ -203,12 +203,12 @@ body.hero-anime p{
 	opacity: 1;
 	transform: translate(0);
     transition: all 300ms linear;
-    transition-delay: 1900ms;
+    transition-delay: 190ms;
 }
 body.hero-anime #switch{
 	opacity: 0;
 	transform: translateY(40px);
-    transition-delay: 1900ms;
+    transition-delay: 100ms;
 }
 #circle {
 	position: absolute;

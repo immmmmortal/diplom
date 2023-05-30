@@ -1,10 +1,49 @@
 {% extends 'my_site/base.html' %}
+{% load static %}
 
 {% block title %}Profile{% endblock %}
-
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
 {% block content %}
-    <h1>Welcome, {{ user.email }}!</h1>
-
+        <h1 style="margin-top: 200px">Welcome, {{ user.email }}!</h1>
+        <h2>Your appointments:</h2>
+        <div class="container mt-4">
+            <div class="row">
+                {% for appointment in appointments %}
+                    <div class="card" style="margin: 10px">
+                        <div class="card-body" style="text-align: center;">
+                            <h5 class="card-title">{{ appointment.service.name }}</h5>
+                            <p class="card-text">Date: {{ appointment.appointment_date }}</p>
+                            <p class="card-text">Time: {{ appointment.appointment_time }}</p>
+                            <form method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                                <button type="submit" class="btn btn-danger" style="margin: 0 auto">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br></br>
+        <h2>Appointments history:</h2>
+        <div class="container mt-4" style="margin-bottom: 50px">
+            <div class="row">
+                {% for appointment in past_appointments %}
+                    <div class="card" style="margin: 10px">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ appointment.service.name }}</h5>
+                            <p class="card-text">Date: {{ appointment.appointment_date }}</p>
+                            <p class="card-text">Time: {{ appointment.appointment_time }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
 {% endblock %}
 
 

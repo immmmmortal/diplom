@@ -1,0 +1,215 @@
+/* FontAwesome for working BootSnippet :> */
+
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+#team {
+    background: #eee !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #108d6f;
+    border-color: #108d6f;
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007b5e;
+    border-color: #007b5e;
+}
+
+section {
+    padding: 60px 0;
+}
+
+section .section-title {
+    text-align: center;
+    color: #e54646;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+}
+
+#team .card {
+    border: none;
+    background: #ffffff;
+}
+
+.image-flip:hover .backside,
+.image-flip.hover .backside {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    border-radius: .25rem;
+}
+
+.image-flip:hover .frontside,
+.image-flip.hover .frontside {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.mainflip {
+    -webkit-transition: 1s;
+    -webkit-transform-style: preserve-3d;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -moz-transform: perspective(1000px);
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transition: 1s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.frontside {
+    position: relative;
+    -webkit-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    z-index: 2;
+    margin-bottom: 30px;
+}
+
+.backside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    -webkit-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    -moz-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+}
+
+.frontside,
+.backside {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: 1s;
+    -webkit-transform-style: preserve-3d;
+    -moz-transition: 1s;
+    -moz-transform-style: preserve-3d;
+    -o-transition: 1s;
+    -o-transform-style: preserve-3d;
+    -ms-transition: 1s;
+    -ms-transform-style: preserve-3d;
+    transition: 1s;
+    transform-style: preserve-3d;
+}
+
+.frontside .card,
+.backside .card {
+    min-height: 312px;
+}
+
+.backside .card a {
+    font-size: 18px;
+    color: rgb(255, 255, 255) !important;
+}
+
+.frontside .card .card-title,
+.backside .card .card-title {
+    color: rgba(0, 0, 0, 0.91) !important;
+}
+
+.frontside .card .card-body img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+
+/* -----------------company----------------------- */
+.about-company {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.about-company-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-img {
+    width: 100%;
+    margin: 1rem 0rem 0rem 2rem;
+}
+
+.about-img img {
+    width: 100%;
+}
+
+.about-company-info {
+    width: 100%;
+    margin-right: 4rem;
+}
+
+.about-company-info span {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.about-company-info span .our {
+    color: #ffdc0e;
+}
+
+.about-company-info p {
+    font-size: 1.1rem;
+}
+
+/* ----------------------------------------------- */
+
+.emp-card {
+    max-width: 150rem;
+    box-shadow: #c3c9d7 0 10px 50px 4px;
+    border-radius: 20px;
+    background: white;
+}
+
+.emp-container {
+    margin-top: 20px;
+
+}
+
+.emp-img {
+
+}
+
+.emp-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.emp-about {
+    margin-left: 5px;
+    horiz-align: left;
+    vertical-align: top;
+}
+
+.emp-about p {
+    text-align: left;
+    margin-left: 5px;
+    margin-top: 0px;
+    padding: 20px;
+}
+
+.emp-about h2 {
+    margin-bottom: 0;
+    padding: 10px;
+}
+

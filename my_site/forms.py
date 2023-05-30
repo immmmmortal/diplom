@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Customer, Appointment
+from .models import Customer, Appointment, RenderedService
 from datetime import date
 
 TIME_CHOICES = (
@@ -14,7 +14,7 @@ TIME_CHOICES = (
 
 
 class CustomerCreationForm(UserCreationForm):
-    name = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'placeholder': 'Name'}))
+    username = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     email = forms.EmailField(max_length=255, required=True, widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
     phone_number = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
@@ -23,7 +23,7 @@ class CustomerCreationForm(UserCreationForm):
 
     class Meta:
         model = Customer
-        fields = ('name', 'email', 'phone_number', 'password1', 'password2')
+        fields = ('username', 'email', 'phone_number', 'password1', 'password2')
 
 
 class CustomerLoginForm(AuthenticationForm):
@@ -33,9 +33,9 @@ class CustomerLoginForm(AuthenticationForm):
 
 
 class UpdateUserForm(forms.ModelForm):
-    name = forms.CharField(max_length=100,
-                           required=True,
-                           widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(max_length=100,
+                               required=True,
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(required=True,
                              widget=forms.TextInput(attrs={'class': 'form-control'}))
     phone_number = forms.CharField(max_length=20,
@@ -44,7 +44,7 @@ class UpdateUserForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        fields = ['name', 'email', 'phone_number']
+        fields = ['username', 'email', 'phone_number']
 
 
 class DateForm(forms.Form):
@@ -59,3 +59,5 @@ class AppointmentForm(forms.ModelForm):
         widgets = {
             'appointment_time': forms.Select(choices=[])
         }
+
+

@@ -3,23 +3,34 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from my_site.forms import CustomerCreationForm, CustomerLoginForm, UpdateUserForm
-from my_site.models import Appointment
+from my_site.models import Appointment, User, RenderedService, Employee
+from datetime import datetime
 
 
 def login_view(request):
     if request.method == 'POST':
         email = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
+
+        # Check if the user is a customer
+        customer = authenticate(request, email=email, password=password)
+        if customer is not None:
+            login(request, customer)
+            messages.success(request, 'Logged in successfully.')
             return redirect('home')
-        else:
-            error = 'Invalid email or password'
-            return render(request, 'members/login.html', {'error': error})
+
+        # Check if the user is an employee
+        employee = authenticate(request, email=email, password=password)
+        if employee is not None:
+            login(request, employee)
+            messages.success(request, 'Logged in successfully.')
+            return redirect('home')
+
+        error = 'Invalid email or password'
+        return render(request, 'members/login.html', {'error': error})
     else:
         form = CustomerLoginForm()
         return render(request, 'members/login.html', {'form': form})
@@ -47,16 +58,51 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    user = request.user
-    appointments = Appointment.objects.filter(customer=user)
+    user: User = request.user
+    current_date = datetime.now().date()
+    if user.is_employee():
+        upcoming_appointments = Appointment.objects.filter(appointment_date__gte=current_date)
+        booked_times_in_appointments = RenderedService.objects.filter(employee_id=user.id)
+        past_appointments = RenderedService.objects.filter(employee_id=user.id)
 
-    context = {
-        'user': user,
-        'appointments': appointments,
+        available_appointments = upcoming_appointments.exclude(
+            id__in=booked_times_in_appointments.values_list('appointment_id__id', flat=True)
+        ).exclude(
+            appointment_date__in=past_appointments.values_list('appointment_id__appointment_date', flat=True),
+            appointment_time__in=past_appointments.values_list('appointment_id__appointment_time', flat=True)
+        )
 
-    }
+        context = {
+            'appointments': available_appointments,
+            'past_appointments': past_appointments,
 
-    return render(request, 'members/profile.html', context)
+        }
+        if request.method == 'POST':
+            RenderedService.objects.create(
+                employee_id=Employee.objects.get(pk=user.id),
+                appointment_id=Appointment.objects.get(pk=request.POST.get('appointment_id'))
+            )
+            messages.success(request, 'Accepted appointment successfully.')
+
+        return render(request, 'members/employee_profile.html', context)
+    else:
+        user = request.user
+        upcoming_appointments = Appointment.objects.filter(customer=user, appointment_date__gte=current_date)
+        past_appointments = Appointment.objects.filter(customer=user, appointment_date__lt=current_date)
+        if request.method == 'POST':
+            appointment_id = request.POST.get('appointment_id')
+            if appointment_id:
+                appointment = get_object_or_404(Appointment, pk=appointment_id)
+                appointment.delete()
+                messages.success(request, 'Appointment cancelled successfully.')
+
+        context = {
+            'user': user,
+            'appointments': upcoming_appointments,
+            'past_appointments': past_appointments,
+        }
+
+        return render(request, 'members/profile.html', context)
 
 
 @login_required

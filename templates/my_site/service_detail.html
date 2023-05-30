@@ -1,32 +1,31 @@
 {% extends 'my_site/base.html' %}
 {% load static custom_filters %}
 {% block content %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <div class="service-details">
-        <h1>{{ service.name }}</h1>
-        <p>{{ service.description }}</p>
-        <form method="post" id="my-form">
+    <div class="service-details" style="margin-top: 100px;    height: 700px;">
+        <h1 style="text-align: left">{{ service.name }}</h1>
+        <p style="text-align: left;
+    background: lightgray;
+    border-radius: 10px;
+    padding: 10px;">{{ service.description }}</p>
+        <form method="post" id="my_form" style="text-align: center;
+}">
             {% csrf_token %}
             <div id="date-container">
-                <label for="appointment_date">Appointment Date:</label>
+                <label for="appointment_date_label" style="margin-top: 30px;margin-bottom: 0px"></label>
                 {{ date_form.appointment_date }}
-                <div id="available-times"></div>
+                <div id="available-times" style="margin-top: 20px"></div>
             </div>
-            <input type="submit" value="Book Appointment">
+            <br>
+            <button type="submit" class="btn btn-lg"
+                    style="background-color: #ff4242;color: #ffffff;margin-bottom: 50px" value="Book Appointment">Book
+                Appointment
+            </button>
+            <input type="hidden" id="service_id" value="{{ service.id }}">
         </form>
-
-
     </div>
 
 
     <script>
-
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -52,7 +51,7 @@
         }
 
         // Add an event listener to the form submission
-        document.getElementById("my-form").addEventListener("submit", function (event) {
+        document.getElementById("my_form").addEventListener("submit", function (event) {
             // Prevent the form from submitting if a time has not been selected
             if (!document.querySelector('input[name="appointment_time"]:checked')) {
                 event.preventDefault(); // Stop the form submission
@@ -64,9 +63,10 @@
         });
 
         var dateInput = document.getElementById('id_appointment_date');
+        var serviceId = document.getElementById('service_id');
         dateInput.addEventListener('change', function () {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '{% url "get_available_times" %}');
+            xhr.open('POST', '{% url "get_available_times"%}');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));  // Include the CSRF token in the request headers
             xhr.onload = function () {
@@ -82,14 +82,11 @@
                     console.error('Request failed.  Returned status of ' + xhr.status);
                 }
             };
-            xhr.send('appointment_date=' + encodeURIComponent(this.value));
+            xhr.send('appointment_date=' + encodeURIComponent(this.value) + '&service_id=' + encodeURIComponent(serviceId.value));
         });
 
-        // Add an event listener to the form submission
-        document.getElementById("my-form").addEventListener("submit", function (event) {
-            // Reset the date input element to its default value
-            dateInput.value = dateInput.defaultValue;
-        });
+
     </script>
+
 
 {% endblock %}

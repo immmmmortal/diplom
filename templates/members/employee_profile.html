@@ -1,0 +1,45 @@
+{% extends 'my_site/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 7%">Welcome employee, {{ user.email }}!</h1>
+    <h2>Available appointments:</h2>
+    <div class="container mt-4">
+        <div class="row">
+            {% for appointment in appointments %}
+                <div class="card" style="margin: 10px">
+                    <div class="card-body" style="text-align: center;">
+                        <h5 class="card-title">{{ appointment.service.name }}</h5>
+                        <p class="card-text">Date: {{ appointment.appointment_date }}</p>
+                        <p class="card-text">Time: {{ appointment.appointment_time }}</p>
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                            <button type="submit" class="btn btn-danger" style="margin: 0 auto">Accept</button>
+                            <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br></br>
+    <h2>Appointments history:</h2>
+    <div class="container mt-4">
+        <div class="row">
+            {% for appointment in past_appointments %}
+                <div class="card" style="margin: 10px">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ appointment.appointment_id.service.name }}</h5>
+                        <p class="card-text">Date: {{ appointment.appointment_id.appointment_date }}</p>
+                        <p class="card-text">Time: {{ appointment.appointment_id.appointment_time }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+

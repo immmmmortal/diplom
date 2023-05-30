@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
 <body class="hero-anime">
-<div class="navigation-wrap bg-light start-header start-style" >
+<div class="navigation-wrap bg-light start-header start-style" style="background-color: #828d99 !important;">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -30,9 +30,9 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                    aria-haspopup="true" aria-expanded="false">Services</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Facelift</a>
-                                    <a class="dropdown-item" href="#">Body contouring</a>
-                                    <a class="dropdown-item" href="#">Dermabrasion</a>
+                                    <a class="dropdown-item" href="{% url 'facelifting' %}">Facelift</a>
+                                    <a class="dropdown-item" href="{% url 'body_contouring' %}">Body contouring</a>
+                                    <a class="dropdown-item" href="{% url 'dermabrasion' %}">Dermabrasion</a>
                                 </div>
                             </li>
                             {% if user.is_authenticated %}

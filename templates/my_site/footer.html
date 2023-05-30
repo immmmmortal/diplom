@@ -1,0 +1,41 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<footer class="footer-sec">
+    <div class="main">
+        <div class="logo row">
+            <div class="footer-header">
+            </div>
+
+        </div>
+
+        <div class="office row">
+            <div class="office-des">
+                <p>At our salon, we're passionate about helping you look and feel your best. Our expert stylists and
+                    estheticians are dedicated to providing you with top-quality services that enhance your natural
+                    beauty and boost your confidence. Whether you're looking for a fresh new hairstyle, a relaxing
+                    massage, or a pampering spa treatment, we've got you covered. Visit us today and let us help you
+                    shine!</p>
+
+                <a href="#" style="margin-left: 35%">kuza617@gmail.com</a>
+
+            </div>
+        </div>
+
+
+        <div class="link row" style="margin-left: 30%">
+
+            <div class="link-des">
+                <a href="{% url 'home' %}" class="footer-links">Home</a>
+                <a href="{% url 'about' %}" class="footer-links">About</a>
+                <a href="{% url 'home' %}" class="footer-links">Services</a>
+                <a href="{% url 'profile' %}" class="footer-links">Profile</a>
+                <a href="{% url 'home' %}" class="footer-links">Contact</a>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <hr>
+
+        <p style="margin-bottom: 0">© Copyright 2023 Beauty salon.</p>
+    </div>
+</footer>

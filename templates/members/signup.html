@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="signup-form" style="margin-top: 10%">
+    <div class="signup-form" style="margin: 10%;">
         <div class="container">
             <div class="header">
                 <h1>Create an Account</h1>
@@ -15,7 +15,7 @@
                 {% csrf_token %}
                 <div class="input">
                     <i class="fas fa-user"></i>
-                    {{ form.name }}
+                    {{ form.username }}
                 </div>
                 <div class="input">
                     <i class="fas fa-envelope"></i>
