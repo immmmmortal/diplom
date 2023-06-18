@@ -47,6 +47,10 @@ class UpdateUserForm(forms.ModelForm):
         fields = ['username', 'email', 'phone_number']
 
 
+
+
+
+
 class DateForm(forms.Form):
     appointment_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date', 'min': date.today().strftime('%Y-%m-%d')}), initial=None)

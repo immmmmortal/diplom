@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView, LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -10,30 +10,12 @@ from my_site.models import Appointment, User, RenderedService, Employee
 from datetime import datetime
 
 
-def login_view(request):
-    if request.method == 'POST':
-        email = request.POST['username']
-        password = request.POST['password']
+class CustomLoginView(LoginView):
+    template_name = 'members/login.html'  # Replace with your actual template name
+    redirect_authenticated_user = True  # Redirect to a different page if the user is already authenticated
 
-        # Check if the user is a customer
-        customer = authenticate(request, email=email, password=password)
-        if customer is not None:
-            login(request, customer)
-            messages.success(request, 'Logged in successfully.')
-            return redirect('home')
-
-        # Check if the user is an employee
-        employee = authenticate(request, email=email, password=password)
-        if employee is not None:
-            login(request, employee)
-            messages.success(request, 'Logged in successfully.')
-            return redirect('home')
-
-        error = 'Invalid email or password'
-        return render(request, 'members/login.html', {'error': error})
-    else:
-        form = CustomerLoginForm()
-        return render(request, 'members/login.html', {'form': form})
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 
 def signup_view(request):
@@ -108,11 +90,17 @@ def profile(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
+        user: User = request.user
         user_form = UpdateUserForm(request.POST, instance=request.user)
         if user_form.is_valid():
             user_form.save()
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='profile')
+            if user.is_employee():
+                messages.error(request, 'You cannot edit your profile as an employee')
+                return redirect(to='profile')
+            else:
+                messages.success(request, 'Your profile is updated successfully')
+                return redirect(to='profile')
+
     else:
         user_form = UpdateUserForm(instance=request.user)
 
